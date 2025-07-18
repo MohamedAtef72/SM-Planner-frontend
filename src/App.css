@@ -1,38 +1,46 @@
+/* custom fonts */
+@font-face{
+  font-family: Robo;
+  src: url("../public/fonts/RobotoCondensed-Regular.ttf");
+  font-weight: normal;
+}
+
+@font-face{
+  font-family: Robo;
+  src: url("../public/fonts/RobotoCondensed-Bold.ttf");
+  font-weight: bold;
+}
+
+@font-face{
+  font-family: Robo;
+  src: url("../public/fonts/RobotoCondensed-Regular.ttf");
+  font-weight: normal;
+}
+/* custom fonts */
 .App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+  background-color: #191b1f;
+  height: 100vh;
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  align-items: center;
+  font-family: Robo;
+  font-weight: normal;
 }
 
-.App-link {
-  color: #61dafb;
+.iconButton{
+  transition: all .2s !important;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.iconButton:hover{
+  background-color: #c5c5c5 !important;
+  box-shadow: 0 7px 7px rgba(0, 0, 0, 0,.4);
+}
+
+.todoCard{
+  transition: all .2s !important;
+}
+
+.todoCard:hover{
+  padding: 15px 0;
+  box-shadow: 0 7px 7px rgba(0, 0, 0, 0,.4);
 }
