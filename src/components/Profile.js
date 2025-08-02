@@ -31,7 +31,7 @@ export default function Profile() {
       email:response.data.user.email,
       phoneNumber:response.data.user.phoneNumber,
       country:response.data.user.country,
-      image:`http://sm-planner.runasp.net/${response.data.user.imagePath}`,
+      image:`https://sm-planner.runasp.net/${response.data.user.imagePath}`,
       role:response.data.user.role[0]
     });
   }

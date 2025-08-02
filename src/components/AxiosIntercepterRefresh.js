@@ -7,7 +7,7 @@ const refreshToken = async () => {
     const accessToken = sessionStorage.getItem('token');
     const refreshToken = Cookies.get('refreshToken');
 
-    const response = await axios.post('http://sm-planner.runasp.net/api/Account/Refresh', {
+    const response = await axios.post('https://sm-planner.runasp.net/api/Account/Refresh', {
       accessToken,
       refreshToken
     });
@@ -24,7 +24,7 @@ const refreshToken = async () => {
 };
 // Intercepter To Auto Refresh With Custom Axios
 const api = axios.create({
-  baseURL: 'http://sm-planner.runasp.net/api',
+  baseURL: 'https://sm-planner.runasp.net/api',
 });
 // Adds a request interceptor that runs before every request is sent.
 api.interceptors.request.use((config) => {
