@@ -25,19 +25,19 @@ export default function Profile() {
   })
 
   async function fetchUser() {
-    const response = await api.get('http://localhost:5122/api/User/UserProfile');  
+    const response = await api.get('User/UserProfile');  
     setUser({...user,
       name:response.data.user.userName,
       email:response.data.user.email,
       phoneNumber:response.data.user.phoneNumber,
       country:response.data.user.country,
-      image:`http://localhost:5122/${response.data.user.imagePath}`,
+      image:`http://sm-planner.runasp.net/${response.data.user.imagePath}`,
       role:response.data.user.role[0]
     });
   }
 
   async function fetchTasksCount(){
-    const response = await api.get('http://localhost:5122/api/Task/Count');
+    const response = await api.get('Task/Count');
     setTasksCount(response.data.count);
   }
   useEffect(()=>{
