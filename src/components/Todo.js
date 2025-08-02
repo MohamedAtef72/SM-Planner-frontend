@@ -8,9 +8,10 @@ import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import EditIcon from '@mui/icons-material/Edit';
+// Component
 import { useTodos } from '../contexts/todoContext';
 import { useToast } from '../contexts/toastBoarder';
-
+import api from './AxiosIntercepterRefresh';
 
 
 export default function Todo({todo , showDelete , showEdit}){
@@ -18,9 +19,21 @@ export default function Todo({todo , showDelete , showEdit}){
 
     const {showHideToast} = useToast();
     // Check Click Handler
-    function handleCheckClick(){
+async function handleCheckClick(){
+        try {
+        const updatedStatus = todo.status === "Completed" ? "pending" : "Completed";
+    
+        // API call to update status
+        await api.put(`/Task/Update/${todo.id}`, {
+        ...todo,
+        status: updatedStatus
+        });
+
         todosDispatch({type:"check",id:todo.id});
         showHideToast("Task Edited Successfully");
+        } catch (err) {
+            console.error("Error updating task status:", err);
+        }
     }
     // Delete Events
     function handleDeleteClick(){
@@ -42,15 +55,23 @@ export default function Todo({todo , showDelete , showEdit}){
                             {todo.title}
                        </Typography>
                        <Typography variant='h6' sx={{textAlign:'left'}} >
-                            {todo.details}
+                            {todo.description}
                        </Typography>
                     </Grid>
                     <Grid size={4}>
                         {/* Action Buttons */}
                             <Stack direction="row" spacing={1}>
-                                <IconButton onClick={handleCheckClick} className='iconButton' aria-label="isComplete" 
-                                            style={{color:todo.isCompleted?'white':'green',background:todo.isCompleted?'green':'white',border:'solid lightgray 3px'}}>
-                                    <CheckIcon />
+                                <IconButton
+                                onClick={handleCheckClick}
+                                className="iconButton"
+                                aria-label="isComplete"
+                                style={{
+                                    color: todo.status === 'Completed' ? 'white' : 'green',
+                                    background: todo.status === 'Completed' ? 'green' : 'white',
+                                    border: 'solid lightgray 3px'
+                                }}
+                                >
+                                <CheckIcon />
                                 </IconButton>
                                 <IconButton onClick={handleDeleteClick} className='iconButton' aria-label="delete"  color="primary" 
                                             style={{color:'red',background:'white',border:'solid lightgray 3px'}}>

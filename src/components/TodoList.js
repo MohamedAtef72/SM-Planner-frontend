@@ -1,4 +1,3 @@
-import * as React from 'react';
 import Container from '@mui/material/Container';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -10,6 +9,7 @@ import Stack from '@mui/material/Stack';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
+import Cookies from 'js-cookie';
 // components
 import Todo from './Todo';
 import { useToast } from '../contexts/toastBoarder';
@@ -24,6 +24,9 @@ import {
   DialogActions,
   DialogContentText
 } from '@mui/material';
+import Pagination from '@mui/material/Pagination';
+// others
+import api from './AxiosIntercepterRefresh';
 
 
 export default function TodoList() {
@@ -35,31 +38,66 @@ export default function TodoList() {
   const [dialogTodo , setdialogTodo] = useState("");
   const [showEditDialog,setShowEditDialog] = useState(false);
   const [taskToEdit, setTaskToEdit] = useState({});
+  const [totalPages,setTotalPages] = useState(0);
 
-  // useEffect
-  useEffect(()=>{
-    todosDispatch({type:"get"});
-  },[]);
+  const [currentPage, setCurrentPage] = useState(() => {
+  return Number(Cookies.get('currentPage')) || 1;
+  });
+
+  // deal with pagination
+const handlePaginationClick = (page) => {
+  setCurrentPage(page);
+  Cookies.set('currentPage', page);
+};
+
+// get tasks from server
+const fetchTodos = async () => {
+  try {
+    const res = await api.get(`/Task/MyTasks?pageNumber=${currentPage}`);
+    setTotalPages(res.data.pagination.totalPages);
+    todosDispatch({ type: "load", payload: res.data.tasks });
+  } catch (error) {
+    console.error("Error fetching todos:", error);
+  }
+};
+
+useEffect(() => {
+  fetchTodos();
+}, [currentPage]);
 
   // Add Function
-  function handleAddClick(){
-    todosDispatch({type:"add",todo:{
+  async function handleAddClick(){
+    try {
+      if(inputTitle.trim() === ""){
+        showHideToast("Task Title is Required");
+        return;
+      }
+      const taskCreated = {
         title: inputTitle,
-      }});
+        description:"details",
+        status: "pending",
+        dueDate: "2025-07-21T12:34:32.017Z"
+      };
+      const res = await api.post('/Task/Add',
+        taskCreated);
+      todosDispatch({ type: "add", todo: res.data.task});
       setInputTitle("");
-      showHideToast("Task Added Successfully");
+      showHideToast(res.data.message);
+    } catch (error) {
+      console.error("Error adding todo:", error);
+    }
   }
 
   // filteration arrays
   const completetedTodos = useMemo(() => {
     return todos.filter((t) => {
-      return t.isCompleted;
+      return t.status === "Completed";
     });
   },[todos]);
 
   const unCompletetedTodos = useMemo(() => {
     return todos.filter((t) => {
-      return !t.isCompleted;
+      return t.status === "pending";
     });
   },[todos]);
 
@@ -67,7 +105,7 @@ export default function TodoList() {
   if(todoProgress === "Completed"){
     todosToBeRendered = completetedTodos;
   }
-  else if(todoProgress === "UnCompleted"){
+  else if(todoProgress === "pending"){
     todosToBeRendered = unCompletetedTodos;
   } 
   // end filteration arrays
@@ -93,11 +131,23 @@ export default function TodoList() {
         setShowDeleteDialog(false);
     }
 
-    function handleConfirmDelete(){
-        todosDispatch({type:"delete",id:dialogTodo.id});
-        setShowDeleteDialog(false);
-        showHideToast("Task Deleted Successfully");
-    }
+async function handleConfirmDelete() {
+  try {
+    const res = await api.delete(
+      `/Task/Delete/${dialogTodo.id}`
+    );
+
+    // Success
+    todosDispatch({ type: "delete", id: dialogTodo.id });
+    setShowDeleteDialog(false);
+    showHideToast(res.data.message || "Task deleted successfully");
+
+  } catch (error) {
+    console.error("Error deleting task:", error.response?.data || error.message);
+    showHideToast("Failed to delete task");
+  }
+}
+
   // end handle DeleteDialog
   
   // handle EditDialog
@@ -111,12 +161,37 @@ export default function TodoList() {
         setShowEditDialog(false);
     }
 
-    // Edit Dialog Save Handler
-    function handleEditSave(){
-        todosDispatch({type:"edit",id:dialogTodo.id,todo:taskToEdit});
-        handleCloseEditDialog();
-        showHideToast("Task Updated Successfully");
+  // Edit Dialog Save Handler
+async function handleEditSave (){
+  try {
+    const updatedTask = {
+      title: taskToEdit.title,
+      description: taskToEdit.details,
+      status: dialogTodo.status,
+      dueDate: dialogTodo.dueDate,
     }
+
+    const res = await api.put(
+      `/Task/Update/${dialogTodo.id}`,
+       updatedTask
+    );
+    // Dispatch only after success
+    todosDispatch({
+      type: "edit",
+      id: dialogTodo.id,
+      todo: res.data.task
+    });
+
+    showHideToast(res.data.message);
+  } catch (error) {
+    console.error("Error editing todo:", error.response?.data || error.message);
+    showHideToast("Failed to update");
+  }
+  finally{
+    handleCloseEditDialog();
+  }
+}
+
   // end handle EditDialog
 
   return (
@@ -142,7 +217,6 @@ export default function TodoList() {
         </DialogActions>
         </Dialog>
         {/* Delete Dialog */}
-
         {/* Edit Dialog */}
         <Dialog
             open={showEditDialog}
@@ -207,8 +281,8 @@ export default function TodoList() {
                             <ToggleButton value="Completed" aria-label="centered">
                               Completed
                             </ToggleButton>
-                            <ToggleButton value="UnCompleted" aria-label="right aligned">
-                              UnCompleted
+                            <ToggleButton value="pending" aria-label="right aligned">
+                              Pending
                             </ToggleButton>
                     </ToggleButtonGroup>
                   </Stack>
@@ -226,6 +300,12 @@ export default function TodoList() {
                 {/* Todos */}
                 {taskjsx}
                 {/* Todos */}
+                {/* Pagination */}
+                    <Pagination count={totalPages} color="primary"
+                    page={currentPage}
+                    onChange={(e,page) => handlePaginationClick(page)}
+                    style={{marginTop:"10px",alignContent:"center",display:"flex",justifyContent:"center"}} />
+                {/* Pagination */}
               </CardContent>
           </Card>
       </Container>

@@ -1,55 +1,44 @@
-// uuid
-import { v4 as uuidv4 } from 'uuid';
-
 export default function todoReducer(currentTodos,action){
     const actionType = action.type;
 
     switch(actionType){
+        case "load": {
+            return action.payload;
+             }
         case "add":{
             if(action.todo.title.trim() !== ""){
                 const newTask = {
-                    id: uuidv4(),
+                    id:action.todo.id,
                     title: action.todo.title,
-                    details: "",
-                    isCompleted: false
+                    description: action.todo.description,
+                    status: action.todo.status,
+                    dueDate: action.todo.dueDate,
                     };
+
                 const updatedTasks = [...currentTodos,newTask];
-                localStorage.setItem("todos",JSON.stringify(updatedTasks));
                 return updatedTasks;
                 }}
+                
         case "delete":{
             const updatedTasks = currentTodos.filter((t) => t.id !== action.id);
-            localStorage.setItem("todos",JSON.stringify(updatedTasks));
             return updatedTasks;
         }
 
-        case "edit":{
-            const updatedTasks = currentTodos.map((t) => {
-                if(t.id === action.id){
-                    return {...t,title:action.todo.title,details:action.todo.details};
-                }
-                return t;
-            });
-            localStorage.setItem("todos",JSON.stringify(updatedTasks));
-            return updatedTasks;
-        }
-        
-        case "get":{
-                const storedTasks = localStorage.getItem("todos");
-                if(storedTasks){
-                    return JSON.parse(storedTasks);
-                }
+        case "edit": {
+        const updatedTodos = currentTodos.map(todo =>
+            todo.id === action.id ? { ...todo, ...action.todo } : todo
+        );
+        return updatedTodos;
         }
 
-        case "check":{
-            const updatedTasks = currentTodos.map((t) => {
-                if(t.id === action.id){
-                    return {...t,isCompleted:!t.isCompleted};
-                }
-                return t;
-            });
-            localStorage.setItem("todos",JSON.stringify(updatedTasks));
-            return updatedTasks;
+        case "check": {
+        const updatedTasks = currentTodos.map((t) => {
+            if (t.id === action.id) {
+            return { ...t, status: t.status === "Completed" ? "pending" : "Completed" };
+            }
+            return t;
+        });
+        return updatedTasks;
         }
         
         default:
