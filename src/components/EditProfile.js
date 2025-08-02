@@ -22,7 +22,7 @@ export default function EditProfile() {
 
   useEffect(() => {
     async function fetchUser() {
-      const res = await api.get('http://localhost:5122/api/User/UserProfile');
+      const res = await api.get('User/UserProfile');
       const u = res.data.user;
       setForm({
         userName: u.userName,
@@ -56,7 +56,7 @@ export default function EditProfile() {
     }
 
     try {
-      const res = await api.put('http://localhost:5122/api/User/Update', formData);
+      const res = await api.put('User/Update', formData);
       if (res.status === 200) {
         navigate('/profile');
       }
@@ -85,7 +85,7 @@ export default function EditProfile() {
       {form.imagePath && (
         <Box sx={{ display: 'flex', justifyContent: 'center', mb: 2}}>
           <Avatar
-            src={`http://localhost:5122/${form.imagePath}`}
+            src={`https://sm-planner.runasp.net/${form.imagePath}`}
             sx={{ width: 170, height: 170 }}
           />
         </Box>
