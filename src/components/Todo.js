@@ -50,39 +50,27 @@ async function handleCheckClick(){
         <Card className='todoCard' sx={{ minWidth: 275,backgroundColor:'#283593',color:'white',marginTop:2}}>
             <CardContent>
                 <Grid container spacing={2}>
-                    <Grid size={8}>
-                       <Typography variant='h5' sx={{textAlign:'left', fontWeight:"bold"}} >
-                            {todo.title}
-                       </Typography>
-                       <Typography variant='h6' sx={{textAlign:'left'}} >
-                            {todo.description}
-                       </Typography>
-                    </Grid>
-                    <Grid size={4}>
-                        {/* Action Buttons */}
-                            <Stack direction="row" spacing={1}>
-                                <IconButton
-                                onClick={handleCheckClick}
-                                className="iconButton"
-                                aria-label="isComplete"
-                                style={{
-                                    color: todo.status === 'Completed' ? 'white' : 'green',
-                                    background: todo.status === 'Completed' ? 'green' : 'white',
-                                    border: 'solid lightgray 3px'
-                                }}
-                                >
-                                <CheckIcon />
-                                </IconButton>
-                                <IconButton onClick={handleDeleteClick} className='iconButton' aria-label="delete"  color="primary" 
-                                            style={{color:'red',background:'white',border:'solid lightgray 3px'}}>
-                                    <DeleteOutlineIcon />
-                                </IconButton>
-                                <IconButton onClick={handleEditClick} className='iconButton' color="secondary" aria-label="Edit" style={{color:'blue',background:'white',border:'solid lightgray 3px'}}>
-                                    <EditIcon />
-                                </IconButton>
-                            </Stack>
-                        {/* Action Buttons */}
-                    </Grid>
+                <Grid item xs={12} sm={8}>
+                    <Typography variant='h5' sx={{textAlign:'left', fontWeight:"bold"}} >
+                        {todo.title}
+                    </Typography>
+                    <Typography variant='h6' sx={{textAlign:'left'}} >
+                        {todo.description}
+                    </Typography>
+                </Grid>
+                <Grid item xs={12} sm={4}>
+                    <Stack direction="row" spacing={0.5} flexWrap="wrap">
+                    <IconButton size="small" onClick={handleCheckClick}>
+                        <CheckIcon fontSize="small" />
+                    </IconButton>
+                    <IconButton size="small" onClick={handleDeleteClick}>
+                        <DeleteOutlineIcon fontSize="small" />
+                    </IconButton>
+                    <IconButton size="small" onClick={handleEditClick}>
+                        <EditIcon fontSize="small" />
+                    </IconButton>
+                    </Stack>
+                </Grid>
                 </Grid>
             </CardContent>
         </Card>
