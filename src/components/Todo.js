@@ -45,54 +45,100 @@ async function handleCheckClick(){
         showEdit(todo);
     }
     // End Edit Events
-    return(
-        <>
-        <Card className='todoCard' sx={{ minWidth: 275,backgroundColor:'#283593',color:'white',marginTop:2}}>
+return (
+    <>
+        <Card className='todoCard' sx={{ minWidth: 275, backgroundColor:'#283593', color:'white', marginTop:2}}>
             <CardContent>
-                <Grid container spacing={2}>
-                    <Grid  
+                <Grid container spacing={2} alignItems="center">
+                    {/* Content Section */}
+                    <Grid 
+                        item
+                        xs={12}  // Full width on extra small screens
+                        sm={8}   // 8/12 on small screens
+                        md={8}   // 8/12 on medium screens
+                        lg={8}   // 8/12 on large screens
+                    >
+                        <Typography variant='h5' sx={{textAlign:'left', fontWeight:"bold"}} >
+                            {todo.title}
+                        </Typography>
+                        <Typography variant='h6' sx={{textAlign:'left'}} >
+                            {todo.description}
+                        </Typography>
+                    </Grid>
+                    
+                    {/* Action Buttons Section */}
+                    <Grid 
+                        item
+                        xs={12}  // Full width on extra small screens
+                        sm={4}   // 4/12 on small screens
+                        md={4}   // 4/12 on medium screens
+                        lg={4}   // 4/12 on large screens
                         sx={{
-                            size: {sm: 5 , md:8, lg: 8},
+                            display: 'flex',
+                            justifyContent: { xs: 'center', sm: 'flex-end' }, // Center on mobile, right-align on larger screens
+                            alignItems: 'center'
                         }}
                     >
-                       <Typography variant='h5' sx={{textAlign:'left', fontWeight:"bold"}} >
-                            {todo.title}
-                       </Typography>
-                       <Typography variant='h6' sx={{textAlign:'left'}} >
-                            {todo.description}
-                       </Typography>
-                    </Grid>
-                    <Grid 
-                        sx={{
-                            size: {sm: 5 , md:4, lg: 4},
-                        }}>
-                        {/* Action Buttons */}
-                            <Stack direction="row" spacing={1}>
-                                <IconButton
+                        <Stack 
+                            direction="row" 
+                            spacing={1}
+                            sx={{
+                                flexWrap: 'nowrap', // Prevent wrapping
+                                justifyContent: 'center'
+                            }}
+                        >
+                            <IconButton
                                 onClick={handleCheckClick}
                                 className="iconButton"
                                 aria-label="isComplete"
-                                style={{
+                                size="small" // Make buttons smaller on mobile
+                                sx={{
                                     color: todo.status === 'Completed' ? 'white' : 'green',
                                     background: todo.status === 'Completed' ? 'green' : 'white',
-                                    border: 'solid lightgray 3px'
+                                    border: 'solid lightgray 3px',
+                                    minWidth: { xs: 35, sm: 40 }, // Smaller on mobile
+                                    minHeight: { xs: 35, sm: 40 }
                                 }}
-                                >
-                                <CheckIcon />
-                                </IconButton>
-                                <IconButton onClick={handleDeleteClick} className='iconButton' aria-label="delete"  color="primary" 
-                                            style={{color:'red',background:'white',border:'solid lightgray 3px'}}>
-                                    <DeleteOutlineIcon />
-                                </IconButton>
-                                <IconButton onClick={handleEditClick} className='iconButton' color="secondary" aria-label="Edit" style={{color:'blue',background:'white',border:'solid lightgray 3px'}}>
-                                    <EditIcon />
-                                </IconButton>
-                            </Stack>
-                        {/* Action Buttons */}
+                            >
+                                <CheckIcon fontSize="small" />
+                            </IconButton>
+                            
+                            <IconButton 
+                                onClick={handleDeleteClick} 
+                                className='iconButton' 
+                                aria-label="delete"
+                                size="small"
+                                sx={{
+                                    color:'red',
+                                    background:'white',
+                                    border:'solid lightgray 3px',
+                                    minWidth: { xs: 35, sm: 40 },
+                                    minHeight: { xs: 35, sm: 40 }
+                                }}
+                            >
+                                <DeleteOutlineIcon fontSize="small" />
+                            </IconButton>
+                            
+                            <IconButton 
+                                onClick={handleEditClick} 
+                                className='iconButton' 
+                                aria-label="Edit"
+                                size="small"
+                                sx={{
+                                    color:'blue',
+                                    background:'white',
+                                    border:'solid lightgray 3px',
+                                    minWidth: { xs: 35, sm: 40 },
+                                    minHeight: { xs: 35, sm: 40 }
+                                }}
+                            >
+                                <EditIcon fontSize="small" />
+                            </IconButton>
+                        </Stack>
                     </Grid>
                 </Grid>
             </CardContent>
         </Card>
-        </>
-    )
+    </>
+);
 }
