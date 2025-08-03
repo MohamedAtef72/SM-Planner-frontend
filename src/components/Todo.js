@@ -50,7 +50,11 @@ async function handleCheckClick(){
         <Card className='todoCard' sx={{ minWidth: 275,backgroundColor:'#283593',color:'white',marginTop:2}}>
             <CardContent>
                 <Grid container spacing={2}>
-                    <Grid item xs={12} sm={8}>
+                    <Grid  
+                        sx={{
+                            size: {sm: 5 , md:8, lg: 8},
+                        }}
+                    >
                        <Typography variant='h5' sx={{textAlign:'left', fontWeight:"bold"}} >
                             {todo.title}
                        </Typography>
@@ -58,7 +62,10 @@ async function handleCheckClick(){
                             {todo.description}
                        </Typography>
                     </Grid>
-                    <Grid item xs={12} sm={4}>
+                    <Grid 
+                        sx={{
+                            size: {sm: 5 , md:4, lg: 4},
+                        }}>
                         {/* Action Buttons */}
                             <Stack direction="row" spacing={1}>
                                 <IconButton
