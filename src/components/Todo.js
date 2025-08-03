@@ -2,7 +2,6 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
 // Icons
 import CheckIcon from '@mui/icons-material/Check';
 import IconButton from '@mui/material/IconButton';
@@ -46,186 +45,49 @@ async function handleCheckClick(){
         showEdit(todo);
     }
     // End Edit Events
-return (
-    <>
-        <Card className='todoCard' sx={{ minWidth: 275, backgroundColor:'#283593', color:'white', marginTop:2}}>
-            <CardContent sx={{ padding: { xs: 1.5, sm: 2 } }}> 
-                {/* Mobile Layout - Stacked */}
-                <Box sx={{ display: { xs: 'block', sm: 'none' } }}>
-                    {/* Text Content */}
-                    <Box sx={{ marginBottom: 1 }}>
-                        <Typography 
-                            variant='h5' 
-                            sx={{
-                                textAlign:'left', 
-                                fontWeight:"bold",
-                                fontSize: '1.1rem'
-                            }} 
-                        >
+    return(
+        <>
+        <Card className='todoCard' sx={{ minWidth: 275,backgroundColor:'#283593',color:'white',marginTop:2}}>
+            <CardContent>
+                <Grid container spacing={2}>
+                    <Grid 
+                     size={6.6}
+                    >
+                       <Typography variant='h5' sx={{textAlign:'left', fontWeight:"bold"}} >
                             {todo.title}
-                        </Typography>
-                        <Typography 
-                            variant='h6' 
-                            sx={{
-                                textAlign:'left',
-                                fontSize: '0.9rem',
-                                marginTop: 0.5
-                            }} 
-                        >
+                       </Typography>
+                       <Typography variant='h6' sx={{textAlign:'left'}} >
                             {todo.description}
-                        </Typography>
-                    </Box>
-                    
-                    {/* Buttons Below Text */}
-                    <Box sx={{ display: 'flex', justifyContent: 'center', gap: 1 }}>
-                        <IconButton
-                            onClick={handleCheckClick}
-                            className="iconButton"
-                            aria-label="isComplete"
-                            sx={{
-                                color: todo.status === 'Completed' ? 'white' : 'green',
-                                background: todo.status === 'Completed' ? 'green' : 'white',
-                                border: 'solid lightgray 2px',
-                                minWidth: 40,
-                                minHeight: 40
-                            }}
-                        >
-                            <CheckIcon />
-                        </IconButton>
-                        
-                        <IconButton 
-                            onClick={handleDeleteClick} 
-                            className='iconButton' 
-                            aria-label="delete"
-                            sx={{
-                                color:'red',
-                                background:'white',
-                                border:'solid lightgray 2px',
-                                minWidth: 40,
-                                minHeight: 40
-                            }}
-                        >
-                            <DeleteOutlineIcon />
-                        </IconButton>
-                        
-                        <IconButton 
-                            onClick={handleEditClick} 
-                            className='iconButton' 
-                            aria-label="Edit"
-                            sx={{
-                                color:'blue',
-                                background:'white',
-                                border:'solid lightgray 2px',
-                                minWidth: 40,
-                                minHeight: 40
-                            }}
-                        >
-                            <EditIcon />
-                        </IconButton>
-                    </Box>
-                </Box>
-
-                {/* Desktop/Tablet Layout - Side by Side */}
-                <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
-                    <Grid container spacing={2} alignItems="center">
-                        {/* Content Section */}
-                        <Grid 
-                            item
-                            xs={8}   
-                            sm={8}   
-                            md={8}   
-                            lg={8}   
-                        >
-                            <Typography 
-                                variant='h5' 
-                                sx={{
-                                    textAlign:'left', 
-                                    fontWeight:"bold"
-                                }} 
-                            >
-                                {todo.title}
-                            </Typography>
-                            <Typography 
-                                variant='h6' 
-                                sx={{
-                                    textAlign:'left',
-                                    marginTop: 0.5
-                                }} 
-                            >
-                                {todo.description}
-                            </Typography>
-                        </Grid>
-                        
-                        {/* Action Buttons Section */}
-                        <Grid 
-                            item
-                            xs={4}   
-                            sm={4}   
-                            md={4}   
-                            lg={4}   
-                            sx={{
-                                display: 'flex',
-                                justifyContent: 'flex-end',
-                                alignItems: 'center'
-                            }}
-                        >
-                            <Stack 
-                                direction="row"
-                                spacing={1}
-                                sx={{
-                                    alignItems: 'center'
-                                }}
-                            >
+                       </Typography>
+                    </Grid>
+                    <Grid size={5} >
+                        {/* Action Buttons */}
+                            <Stack direction="row" spacing={1}>
                                 <IconButton
-                                    onClick={handleCheckClick}
-                                    className="iconButton"
-                                    aria-label="isComplete"
-                                    sx={{
-                                        color: todo.status === 'Completed' ? 'white' : 'green',
-                                        background: todo.status === 'Completed' ? 'green' : 'white',
-                                        border: 'solid lightgray 2px',
-                                        minWidth: 40,
-                                        minHeight: 40
-                                    }}
+                                onClick={handleCheckClick}
+                                className="iconButton"
+                                aria-label="isComplete"
+                                style={{
+                                    color: todo.status === 'Completed' ? 'white' : 'green',
+                                    background: todo.status === 'Completed' ? 'green' : 'white',
+                                    border: 'solid lightgray 3px'
+                                }}
                                 >
-                                    <CheckIcon />
+                                <CheckIcon />
                                 </IconButton>
-                                
-                                <IconButton 
-                                    onClick={handleDeleteClick} 
-                                    className='iconButton' 
-                                    aria-label="delete"
-                                    sx={{
-                                        color:'red',
-                                        background:'white',
-                                        border:'solid lightgray 2px',
-                                        minWidth: 40,
-                                        minHeight: 40
-                                    }}
-                                >
+                                <IconButton onClick={handleDeleteClick} className='iconButton' aria-label="delete"  color="primary" 
+                                            style={{color:'red',background:'white',border:'solid lightgray 3px'}}>
                                     <DeleteOutlineIcon />
                                 </IconButton>
-                                
-                                <IconButton 
-                                    onClick={handleEditClick} 
-                                    className='iconButton' 
-                                    aria-label="Edit"
-                                    sx={{
-                                        color:'blue',
-                                        background:'white',
-                                        border:'solid lightgray 2px',
-                                        minWidth: 40,
-                                        minHeight: 40
-                                    }}
-                                >
+                                <IconButton onClick={handleEditClick} className='iconButton' color="secondary" aria-label="Edit" style={{color:'blue',background:'white',border:'solid lightgray 3px'}}>
                                     <EditIcon />
                                 </IconButton>
                             </Stack>
-                        </Grid>
+                        {/* Action Buttons */}
                     </Grid>
-                </Box>
+                </Grid>
             </CardContent>
         </Card>
-    </>
-);
+        </>
+    )
 }
