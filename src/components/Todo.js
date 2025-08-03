@@ -1,4 +1,3 @@
-import React from 'react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
@@ -9,8 +8,6 @@ import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import EditIcon from '@mui/icons-material/Edit';
-import useMediaQuery from '@mui/material/useMediaQuery';
-import { useTheme } from '@mui/material/styles';
 // Component
 import { useTodos } from '../contexts/todoContext';
 import { useToast } from '../contexts/toastBoarder';
@@ -19,20 +16,19 @@ import api from './AxiosIntercepterRefresh';
 
 export default function Todo({todo , showDelete , showEdit}){
     const {todos , todosDispatch} = useTodos();
+
     const {showHideToast} = useToast();
-
-    const theme = useTheme();
-    const isXs = useMediaQuery(theme.breakpoints.down('xs')) || useMediaQuery('(max-width:600px)');
-
     // Check Click Handler
-    async function handleCheckClick(){
+async function handleCheckClick(){
         try {
         const updatedStatus = todo.status === "Completed" ? "pending" : "Completed";
+    
         // API call to update status
         await api.put(`/Task/Update/${todo.id}`, {
         ...todo,
         status: updatedStatus
         });
+
         todosDispatch({type:"check",id:todo.id});
         showHideToast("Task Edited Successfully");
         } catch (err) {
@@ -43,17 +39,18 @@ export default function Todo({todo , showDelete , showEdit}){
     function handleDeleteClick(){
         showDelete(todo);
     }
+    // End Delete Events
     // Edit Events 
     function handleEditClick(){
         showEdit(todo);
     }
-
+    // End Edit Events
     return(
         <>
         <Card className='todoCard' sx={{ minWidth: 275,backgroundColor:'#283593',color:'white',marginTop:2}}>
             <CardContent>
                 <Grid container spacing={2}>
-                    <Grid item xs={12} sm={8}>
+                    <Grid size={8}>
                        <Typography variant='h5' sx={{textAlign:'left', fontWeight:"bold"}} >
                             {todo.title}
                        </Typography>
@@ -61,9 +58,9 @@ export default function Todo({todo , showDelete , showEdit}){
                             {todo.description}
                        </Typography>
                     </Grid>
-                    <Grid item xs={12} sm={4} sx={{display: 'flex', justifyContent: isXs ? 'flex-start' : 'flex-end', alignItems: 'center'}}>
+                    <Grid size={3}>
                         {/* Action Buttons */}
-                            <Stack direction={isXs ? "column" : "row"} spacing={1} sx={{width: isXs ? '100%' : 'auto'}}>
+                            <Stack direction="row" spacing={1}>
                                 <IconButton
                                 onClick={handleCheckClick}
                                 className="iconButton"
