@@ -49,11 +49,11 @@ return (
     <>
         <Card className='todoCard' sx={{ minWidth: 275, backgroundColor:'#283593', color:'white', marginTop:2}}>
             <CardContent>
-                <Grid container spacing={2} >
+                <Grid container spacing={2} alignItems="center">
                     {/* Content Section */}
                     <Grid 
                         item
-                        xs={12}  // Full width on extra small screens
+                        xs={8}   // 8/12 on mobile screens to leave space for buttons
                         sm={8}   // 8/12 on small screens
                         md={8}   // 8/12 on medium screens
                         lg={8}   // 8/12 on large screens
@@ -69,7 +69,7 @@ return (
                     {/* Action Buttons Section */}
                     <Grid 
                         item
-                        xs={12}  // Full width on extra small screens
+                        xs={4}   // 4/12 on mobile screens
                         sm={4}   // 4/12 on small screens
                         md={4}   // 4/12 on medium screens
                         lg={4}   // 4/12 on large screens
@@ -81,7 +81,7 @@ return (
                     >
                         <Stack 
                             direction="row" 
-                            spacing={1}
+                            spacing={0.5} // Reduced spacing on mobile
                             sx={{
                                 flexWrap: 'nowrap', // Prevent wrapping
                                 justifyContent: 'center'
@@ -95,9 +95,10 @@ return (
                                 sx={{
                                     color: todo.status === 'Completed' ? 'white' : 'green',
                                     background: todo.status === 'Completed' ? 'green' : 'white',
-                                    border: 'solid lightgray 3px',
-                                    minWidth: { xs: 35, sm: 40 }, // Smaller on mobile
-                                    minHeight: { xs: 35, sm: 40 }
+                                    border: 'solid lightgray 2px', // Thinner border
+                                    minWidth: { xs: 32, sm: 40 }, // Even smaller on mobile
+                                    minHeight: { xs: 32, sm: 40 },
+                                    padding: { xs: 0.5, sm: 1 } // Less padding on mobile
                                 }}
                             >
                                 <CheckIcon fontSize="small" />
@@ -111,9 +112,10 @@ return (
                                 sx={{
                                     color:'red',
                                     background:'white',
-                                    border:'solid lightgray 3px',
-                                    minWidth: { xs: 35, sm: 40 },
-                                    minHeight: { xs: 35, sm: 40 }
+                                    border:'solid lightgray 2px', // Thinner border
+                                    minWidth: { xs: 32, sm: 40 },
+                                    minHeight: { xs: 32, sm: 40 },
+                                    padding: { xs: 0.5, sm: 1 }
                                 }}
                             >
                                 <DeleteOutlineIcon fontSize="small" />
@@ -127,9 +129,10 @@ return (
                                 sx={{
                                     color:'blue',
                                     background:'white',
-                                    border:'solid lightgray 3px',
-                                    minWidth: { xs: 35, sm: 40 },
-                                    minHeight: { xs: 35, sm: 40 }
+                                    border:'solid lightgray 2px', // Thinner border
+                                    minWidth: { xs: 32, sm: 40 },
+                                    minHeight: { xs: 32, sm: 40 },
+                                    padding: { xs: 0.5, sm: 1 }
                                 }}
                             >
                                 <EditIcon fontSize="small" />
