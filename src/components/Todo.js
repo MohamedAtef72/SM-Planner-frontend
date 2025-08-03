@@ -49,7 +49,7 @@ return (
     <>
         <Card className='todoCard' sx={{ minWidth: 275, backgroundColor:'#283593', color:'white', marginTop:2}}>
             <CardContent>
-                <Grid container spacing={2} alignItems="center">
+                <Grid container spacing={2} >
                     {/* Content Section */}
                     <Grid 
                         item
