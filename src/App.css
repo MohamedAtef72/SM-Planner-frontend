@@ -16,31 +16,3 @@
   src: url("../public/fonts/RobotoCondensed-Regular.ttf");
   font-weight: normal;
 }
-/* custom fonts */
-.App {
-  background-color: #191b1f;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-family: Robo;
-  font-weight: normal;
-}
-
-.iconButton{
-  transition: all .2s !important;
-}
-
-.iconButton:hover{
-  background-color: #c5c5c5 !important;
-  box-shadow: 0 7px 7px rgba(0, 0, 0, 0,.4);
-}
-
-.todoCard{
-  transition: all .2s !important;
-}
-
-.todoCard:hover{
-  padding: 15px 0;
-  box-shadow: 0 7px 7px rgba(0, 0, 0, 0,.4);
-}

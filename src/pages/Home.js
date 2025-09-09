@@ -1,15 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import {
-  Container,
-  Typography,
-  Button,
-  Box,
-  Paper,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText
-} from '@mui/material';
+import { Container,Typography,Button,Box,Paper,List,ListItem,ListItemIcon,ListItemText } from '@mui/material';
 import LoginIcon from '@mui/icons-material/Login';
 import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
@@ -22,22 +12,24 @@ export default function Home() {
   return (
     <Box
       sx={{
-        minHeight: '100vh',
+        minHeight: '90vh',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
+        // Add a subtle gradient background
+        background: 'linear-gradient(45deg, #e3f2fd 30%, #fce4ec 90%)',
       }}
     >
       <Container maxWidth="sm">
         <Paper elevation={6} sx={{ p: 5, borderRadius: 4, textAlign: 'center' }}>
           <Typography variant="h3" component="h1" gutterBottom sx={{ fontWeight: 'bold' }}>
-            📝 Task Manager
+            📝 SM Planner
           </Typography>
           <Typography variant="subtitle1" color="text.secondary" gutterBottom>
-            Organize your daily tasks efficiently and stay productive.
+               Your ultimate tool to organize, track, and accomplish your goals.
           </Typography>
 
-          <List dense sx={{ mt: 3, textAlign: 'left' }}>
+          <List dense sx={{ mt: 3, textAlign: 'left', maxWidth: 400, mx: 'auto' }}>
             <ListItem>
               <ListItemIcon>
                 <CheckCircleIcon color="success" />
@@ -63,7 +55,7 @@ export default function Home() {
               variant="contained"
               color="primary"
               startIcon={<LoginIcon />}
-              sx={{ mr: 2, px: 4 }}
+              sx={{ my: 1, px: 5 , mx:2 }}
               onClick={() => navigate('/login')}
             >
               Login

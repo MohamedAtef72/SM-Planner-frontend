@@ -22,7 +22,7 @@ export default function todoReducer(currentTodos,action){
         case "delete":{
             const updatedTasks = currentTodos.filter((t) => t.id !== action.id);
             return updatedTasks;
-        }
+        };
 
         case "edit": {
         const updatedTodos = currentTodos.map(todo =>

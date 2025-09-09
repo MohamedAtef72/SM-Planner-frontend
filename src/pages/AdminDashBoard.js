@@ -1,28 +1,15 @@
 // hooks
 import { useEffect, useState } from 'react';
 // MUI
-import {
-  Box,
-  Card,
-  CardContent,
-  Typography,
-  CircularProgress,
-  Table,
-  TableHead,
-  TableRow,
-  TableCell,
-  TableBody,
-  Paper,
-  Pagination,
-  Avatar,
-} from '@mui/material';
-import api from './AxiosIntercepterRefresh';
+import { Box,Card,CardContent,Typography,CircularProgress,Table,TableHead,TableRow,TableCell,TableBody,Paper,Pagination,Avatar, } from '@mui/material';
 import Cookies from 'js-cookie';
 //Icons
 import GroupIcon from '@mui/icons-material/Group';
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
 import DeleteIcon from '@mui/icons-material/Delete';
 import IconButton from '@mui/material/IconButton';
+
+import {getAllUsers , allTasks, adminDelete} from '../services/authService';
 
 
 const AdminDashboard = () => {
@@ -81,9 +68,7 @@ const AdminDashboard = () => {
   // Fetches a specific page of users
   const fetchUsers = async (value) => {
     try {
-      const response = await api.get(`User/GetAllUsers`, {
-        params: { pageNumber: value }
-      });
+      const response = await getAllUsers(value);
       setUsers(response.data.users || []);
       setTotalUsers(response.data.pageInfo.totalCount);
       setTotalUsersPages(response.data.pageInfo.totalPages);
@@ -95,9 +80,7 @@ const AdminDashboard = () => {
   // Fetches a specific page of tasks
   const fetchTasks = async (value) => {
     try {
-      const response = await api.get(`Task/GetAllTasks`, {
-        params: { pageNumber: value }
-      });
+      const response = await allTasks(value);
       setTasks(response.data.tasks || []);
       setTotalTasks(response.data.pageInfo.totalCount || 0);
       setTotalTasksPages(response.data.pageInfo.totalPages);
@@ -108,8 +91,8 @@ const AdminDashboard = () => {
 
   // Initial data fetch for both users and tasks5
   useEffect(() => {
-    const uPage = Cookies.get('userPage');
-    const tPage = Cookies.get('taskPage');
+    const uPage = Cookies.get('userPage') || 1;
+    const tPage = Cookies.get('taskPage') || 1;
     const fetchInitialData = async () => {
       setLoading(true);
       await Promise.all([
@@ -135,7 +118,7 @@ const AdminDashboard = () => {
   };
 
   const handleDeleteUser = async (userId) => {
-    const res = await api.delete(`User/AdminDelete/${userId}`);
+    const res = await adminDelete(userId);
     if(res.status === 200){
       const uPage = Cookies.get('userPage');
       const tPage = Cookies.get('taskPage');
@@ -254,9 +237,7 @@ const AdminDashboard = () => {
           flexDirection: 'column',
           gap: 3,
         }}
-      >
-        <Typography variant="h6" gutterBottom>Statistics</Typography>
-        
+      >        
         {/* Total Users Card */}
         <Card elevation={3} sx={{ borderRadius: '16px' }}>
           <CardContent sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>

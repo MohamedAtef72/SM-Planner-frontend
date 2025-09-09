@@ -1,14 +1,14 @@
 import './App.css';
 // Components
-import TodoList from './components/TodoList';
-import Home from './components/Home';
-import Login from './components/Login';
-import Register from './components/Register';
-import Profile from './components/Profile';
+import TodoList from './pages/TodoList';
+import Home from './pages/Home';
+import Login from './pages/Login';
+import Register from './pages/Register';
+import Profile from './pages/Profile';
 import Header from './components/Header';
 import ProtectedRoute from './components/ProtectedRoute';
-import EditProfile from './components/EditProfile';
-import AdminDashBoard from './components/AdminDashBoard';
+import EditProfile from './pages/EditProfile';
+import AdminDashBoard from './pages/AdminDashBoard';
 
 // Other Libraries
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
