@@ -1,20 +1,10 @@
 import * as React from 'react';
-import {
-  AppBar,
-  Box,
-  Toolbar,
-  IconButton,
-  Typography,
-  Menu,
-  Container,
-  Avatar,
-  Tooltip,
-  MenuItem,
-} from '@mui/material';
+import { AppBar,Box,Toolbar,IconButton,Typography,Menu,Container,Avatar,Tooltip,MenuItem, } from '@mui/material';
 import AdbIcon from '@mui/icons-material/Adb';
 import Cookies  from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
-import api from './AxiosIntercepterRefresh';
+import { getRole } from '../services/authService';
+import { Link } from 'react-router-dom';
 
 function Header() {
   const navigate = useNavigate();
@@ -30,29 +20,38 @@ function Header() {
     setAnchorElUser(null);
   };
 
-  const fetchRole = async () => {
+  const handleGetRole = async () => {
     try {
-      const res = await api.get('/User/GetRole');
-      setRole(res.data.role[0]);
+      const role = await getRole();
+      setRole(role);
     } catch (error) {
       console.error('Failed to get role:', error);
     }
+  }
+
+  const handleLogout = () => {
+    sessionStorage.removeItem('token');
+    Cookies.remove('refreshToken');
+    Cookies.remove('currentPage');
+    handleCloseUserMenu();
+    navigate('/');
   };
+
 
   React.useEffect(() => {
     if (token) {
-      fetchRole();
+      handleGetRole();
     }
   }, [token]);
 
-  let settings = [];
-  if (!token) {
-    settings = ['Login', 'Register'];
-  } else if (role === 'Admin') {
-    settings = ['Profile', 'Dashboard', 'Tasks', 'Logout'];
-  } else if (role === 'User') {
-    settings = ['Profile', 'Tasks', 'Logout'];
-  }
+
+   const menuItems = {
+    public: [{ label: 'Login', path: '/login' }, { label: 'Register', path: '/register' }],
+    User: [{ label: 'Profile', path: '/profile' }, { label: 'Tasks', path: '/tasks' }],
+    Admin: [{ label: 'Profile', path: '/profile' }, { label: 'Dashboard', path: '/dashboard' }, { label: 'Tasks', path: '/tasks' }],
+    };
+
+    const currentSettings = token ? (role ? menuItems[role] : []) : menuItems.public;
 
   return (
     <AppBar position="static">
@@ -104,40 +103,26 @@ function Header() {
               </IconButton>
             </Tooltip>
             <Menu
-              sx={{ mt: '45px' }}
-              id="menu-appbar"
+            sx={{ mt: '5px' }}
+              // Attach the menu to the element that was clicked (the avatar)
               anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
+
+              // The menu is open if anchorElUser is not null
               open={Boolean(anchorElUser)}
+
+              // Call this function when the user clicks away from the menu
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography
-                    textAlign="center"
-                    onClick={() => {
-                      if (setting === 'Logout') {
-                        sessionStorage.removeItem('token');
-                        Cookies.remove('refreshToken');
-                        Cookies.remove('currentPage');
-                        navigate('/');
-                      } else {
-                        navigate(`/${setting.toLowerCase()}`);
-                      }
-                    }}
-                  >
-                    {setting}
-                  </Typography>
+              {currentSettings.map((setting) => (
+                <MenuItem key={setting.label} component={Link} to={setting.path} onClick={handleCloseUserMenu}>
+                  <Typography textAlign="center">{setting.label}</Typography>
                 </MenuItem>
               ))}
+              {token && (
+                <MenuItem onClick={handleLogout} sx={{ color: 'error.main' }}>
+                  <Typography textAlign="center">Logout</Typography>
+                </MenuItem>
+              )}
             </Menu>
           </Box>
         </Toolbar>
