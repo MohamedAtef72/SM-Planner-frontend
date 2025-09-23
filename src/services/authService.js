@@ -68,9 +68,9 @@ export const tasksCount = async () => {
   }
 }
 
-export const taskUpdate = async (id, formData,updatedStatus) => {
+export const taskUpdate = async (id, formData) => {
   try {
-    const res = await api.put(`/Task/Update/${id}`, {...formData,status:updatedStatus});
+    const res = await api.put(`/Task/Update/${id}`, formData);
     return res;
   } catch (error) {
     throw error;
