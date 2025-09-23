@@ -69,54 +69,59 @@ export default function Profile() {
     fetchData();
   }, []);
 
-  // Success State: Show profile
-  return (
-    <>
-      <Card sx={{ p: 3, textAlign: "center", mb: 3 }}>
-        <Avatar src={user.imagePath} sx={{ width: 150, height: 150, mx: "auto", mb: 2 }} />
-        <Typography variant="h5" fontWeight="bold">{user.userName}</Typography>
-        <Typography variant="body2" color="text.secondary">{user.role[0]}</Typography>
-        <Button
-              variant="contained"
-              onClick={() => navigate('/editProfile')}
-              startIcon={<EditSquareIcon />}
-              sx={{ textTransform: 'none', fontSize: '1.1rem', py: 1.5, mt:2 }}
-            >
-              Edit Profile
-        </Button>
-      </Card>
-      <Card sx={{ p: 3, textAlign: "center", mb: 3 }}>
-             <CardContent>
-               <Typography variant="h6" gutterBottom>Contact Information</Typography>
-               <List>
-                 <ListItem disablePadding>
-                   <ListItemIcon><EmailOutlinedIcon /></ListItemIcon>
-                   <ListItemText primary={user.email} secondary="Email" />
-                 </ListItem>
-                 <Divider component="li" sx={{ my: 1 }} />
-                 <ListItem disablePadding>
-                   <ListItemIcon><PhoneOutlinedIcon /></ListItemIcon>
-                   <ListItemText primary={user.phoneNumber} secondary="Phone" />
-                 </ListItem>
-                 <Divider component="li" sx={{ my: 1 }} />
-                 <ListItem disablePadding>
-                   <ListItemIcon><FlagOutlinedIcon /></ListItemIcon>
-                   <ListItemText primary={user.country} secondary="Country" />
-                 </ListItem>
-               </List>
-             </CardContent>
-        </Card>
-        <Card sx={{ p: 3, textAlign: "center", mb: 3 }}>
-            <CardContent>
-              <Typography variant="h6" gutterBottom>Activity</Typography>
-              <List>
-                <ListItem disablePadding>
-                  <ListItemIcon><ChecklistIcon /></ListItemIcon>
-                  <ListItemText primary={tasksCount} secondary="Tasks Created" />
-                </ListItem>
-              </List>
-            </CardContent>
-        </Card>
-    </>
-  );
+if (loading) return <Typography>Loading...</Typography>;
+if (error) return <Typography color="error">{error}</Typography>;
+if (!user) return null;
+
+return (
+  <>
+    <Card sx={{ p: 3, textAlign: "center", mb: 3 }}>
+      <Avatar src={user.image} sx={{ width: 150, height: 150, mx: "auto", mb: 2 }} />
+      <Typography variant="h5" fontWeight="bold">{user.name}</Typography>
+      <Typography variant="body2" color="text.secondary">{user.role}</Typography>
+      <Button
+        variant="contained"
+        onClick={() => navigate('/editProfile')}
+        startIcon={<EditSquareIcon />}
+        sx={{ textTransform: 'none', fontSize: '1.1rem', py: 1.5, mt:2 }}
+      >
+        Edit Profile
+      </Button>
+    </Card>
+
+    <Card sx={{ p: 3, textAlign: "center", mb: 3 }}>
+      <CardContent>
+        <Typography variant="h6" gutterBottom>Contact Information</Typography>
+        <List>
+          <ListItem disablePadding>
+            <ListItemIcon><EmailOutlinedIcon /></ListItemIcon>
+            <ListItemText primary={user.email} secondary="Email" />
+          </ListItem>
+          <Divider component="li" sx={{ my: 1 }} />
+          <ListItem disablePadding>
+            <ListItemIcon><PhoneOutlinedIcon /></ListItemIcon>
+            <ListItemText primary={user.phoneNumber} secondary="Phone" />
+          </ListItem>
+          <Divider component="li" sx={{ my: 1 }} />
+          <ListItem disablePadding>
+            <ListItemIcon><FlagOutlinedIcon /></ListItemIcon>
+            <ListItemText primary={user.country} secondary="Country" />
+          </ListItem>
+        </List>
+      </CardContent>
+    </Card>
+
+    <Card sx={{ p: 3, textAlign: "center", mb: 3 }}>
+      <CardContent>
+        <Typography variant="h6" gutterBottom>Activity</Typography>
+        <List>
+          <ListItem disablePadding>
+            <ListItemIcon><ChecklistIcon /></ListItemIcon>
+            <ListItemText primary={tasksCount} secondary="Tasks Created" />
+          </ListItem>
+        </List>
+      </CardContent>
+    </Card>
+  </>
+);
 }
