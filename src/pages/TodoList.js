@@ -169,7 +169,7 @@ export default function TodoList() {
   async function handleEditSave() {
     setIsSubmitting(true);
     try {
-      await taskUpdate(dialogTodo.id, {
+      const res = await taskUpdate(dialogTodo.id, {
         ...dialogTodo,
         title: taskToEdit.title,
         description: taskToEdit.details,
@@ -178,6 +178,7 @@ export default function TodoList() {
       showHideToast("Task successfully updated", "success");
       await fetchTodos();
     } catch (error) {
+      console.error("Error updating task:", error);
       showHideToast("Failed to update task", "error");
     } finally {
       setIsSubmitting(false);
